@@ -1,0 +1,78 @@
+<section class="page-section">
+  <div class="page-header">
+    <a href="/links" class="back-link">&larr; Back to Links</a>
+    <h1 class="page-title">Link Analytics</h1>
+  </div>
+
+  <!-- Link info card -->
+  <div class="analytics-info glass-card">
+    <div class="analytics-info-row">
+      <div class="info-label">Original URL</div>
+      <div class="info-value">
+        <a href="<%= url.originalUrl %>" target="_blank" rel="noopener" class="info-link"><%= url.originalUrl %></a>
+      </div>
+    </div>
+    <div class="analytics-info-row">
+      <div class="info-label">Short URL</div>
+      <div class="info-value">
+        <a href="<%= url.shortUrl %>" target="_blank" class="info-link short-link"><%= url.shortUrl %></a>
+        <button class="btn-icon btn-copy-inline" data-url="<%= url.shortUrl %>" title="Copy">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="analytics-info-row">
+      <div class="info-label">Created</div>
+      <div class="info-value"><%= new Date(url.createdAt).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) %></div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="analytics-stats">
+    <div class="stat-card glass-card">
+      <div class="stat-number"><%= url.clickCount %></div>
+      <div class="stat-label">Total Clicks</div>
+    </div>
+  </div>
+
+  <!-- Recent clicks table -->
+  <div class="page-header" style="margin-top: 2rem;">
+    <h2 class="section-title">Recent Clicks</h2>
+  </div>
+
+  <% if (url.recentClicks.length === 0) { %>
+    <div class="empty-state glass-card">
+      <div class="empty-icon">📊</div>
+      <h2>No clicks yet</h2>
+      <p>Share your short link to start tracking clicks!</p>
+    </div>
+  <% } else { %>
+    <div class="table-wrapper glass-card">
+      <table class="links-table clicks-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Timestamp</th>
+            <th>IP Address</th>
+            <th>User Agent</th>
+            <th>Referer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% url.recentClicks.forEach(function(click, index) { %>
+            <tr>
+              <td class="cell-index"><%= index + 1 %></td>
+              <td class="cell-date"><%= new Date(click.timestamp).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }) %></td>
+              <td class="cell-ip"><%= click.ip || '—' %></td>
+              <td class="cell-ua" title="<%= click.userAgent || '' %>"><%= click.userAgent ? click.userAgent.substring(0, 60) + (click.userAgent.length > 60 ? '...' : '') : '—' %></td>
+              <td class="cell-referer"><%= click.referer || '—' %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</section>

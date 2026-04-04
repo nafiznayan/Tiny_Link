@@ -1,0 +1,59 @@
+<section class="hero">
+  <div class="hero-glow"></div>
+  <h1 class="hero-title">Shorten Your Links,<br /><span class="gradient-text">Amplify Your Reach</span></h1>
+  <p class="hero-subtitle">Paste a long URL and get a short, trackable link in seconds.</p>
+
+  <div class="shorten-card glass-card">
+    <form id="shorten-form" class="shorten-form">
+      <div class="input-group">
+        <input
+          type="url"
+          id="url-input"
+          name="originalUrl"
+          placeholder="https://example.com/your-very-long-url..."
+          required
+          autocomplete="off"
+        />
+        <button type="submit" id="shorten-btn" class="btn btn-primary">
+          <span class="btn-text">Shorten</span>
+          <span class="btn-loader hidden">
+            <span class="spinner"></span>
+          </span>
+        </button>
+      </div>
+    </form>
+
+    <!-- Result area (hidden by default) -->
+    <div id="result-area" class="result-area hidden">
+      <div class="result-card">
+        <div class="result-label">Your short link</div>
+        <div class="result-link-row">
+          <a id="result-link" href="#" target="_blank" class="result-link"></a>
+          <button id="copy-btn" class="btn btn-copy" title="Copy to clipboard">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>Copy</span>
+          </button>
+        </div>
+        <div class="result-original">
+          Original: <span id="result-original-url"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-section">
+  <div class="stats-grid">
+    <div class="stat-card glass-card">
+      <div class="stat-number"><%= totalLinks %></div>
+      <div class="stat-label">Links Created</div>
+    </div>
+    <div class="stat-card glass-card">
+      <div class="stat-number"><%= totalClicks %></div>
+      <div class="stat-label">Total Clicks</div>
+    </div>
+  </div>
+</section>

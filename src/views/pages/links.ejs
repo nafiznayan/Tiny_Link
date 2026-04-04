@@ -1,0 +1,84 @@
+<section class="page-section">
+  <div class="page-header">
+    <h1 class="page-title">My Links</h1>
+    <p class="page-subtitle">Manage all your shortened URLs</p>
+  </div>
+
+  <% if (urls.length === 0) { %>
+    <div class="empty-state glass-card">
+      <div class="empty-icon">📭</div>
+      <h2>No links yet</h2>
+      <p>Go to the <a href="/">home page</a> and shorten your first URL!</p>
+    </div>
+  <% } else { %>
+    <div class="table-wrapper glass-card">
+      <table class="links-table">
+        <thead>
+          <tr>
+            <th>Original URL</th>
+            <th>Short URL</th>
+            <th>Clicks</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% urls.forEach(function(url) { %>
+            <tr id="row-<%= url.shortCode %>">
+              <td class="cell-original" title="<%= url.originalUrl %>">
+                <a href="<%= url.originalUrl %>" target="_blank" rel="noopener"><%= url.originalUrl %></a>
+              </td>
+              <td class="cell-short">
+                <a href="<%= url.shortUrl %>" target="_blank" class="short-link"><%= url.shortUrl %></a>
+                <button class="btn-icon btn-copy-inline" data-url="<%= url.shortUrl %>" title="Copy">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                </button>
+              </td>
+              <td class="cell-clicks">
+                <span class="click-badge"><%= url.clickCount %></span>
+              </td>
+              <td class="cell-date"><%= new Date(url.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></td>
+              <td class="cell-actions">
+                <a href="/links/<%= url.shortCode %>" class="btn btn-sm btn-outline" title="Analytics">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                  </svg>
+                  Stats
+                </a>
+                <button class="btn btn-sm btn-danger" data-delete="<%= url.shortCode %>" title="Delete">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  </svg>
+                  Delete
+                </button>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <% if (pagination.totalPages > 1) { %>
+      <div class="pagination">
+        <% if (pagination.page > 1) { %>
+          <a href="/links?page=<%= pagination.page - 1 %>" class="btn btn-sm btn-outline">&laquo; Prev</a>
+        <% } %>
+
+        <% for (let i = 1; i <= pagination.totalPages; i++) { %>
+          <a href="/links?page=<%= i %>" class="btn btn-sm <%= i === pagination.page ? 'btn-primary' : 'btn-outline' %>"><%= i %></a>
+        <% } %>
+
+        <% if (pagination.page < pagination.totalPages) { %>
+          <a href="/links?page=<%= pagination.page + 1 %>" class="btn btn-sm btn-outline">Next &raquo;</a>
+        <% } %>
+      </div>
+    <% } %>
+  <% } %>
+</section>
