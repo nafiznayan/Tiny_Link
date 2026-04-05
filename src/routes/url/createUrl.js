@@ -1,13 +1,13 @@
-import express from 'express';
-import prisma from '../../db/prisma.js';
-import { generateShortCode } from '../../utils/base62.js';
-import { createUrl } from '../../validators/url.js';
-import { requestValidator } from '../../middleware/requestValidator.js';
+import express from "express";
+import prisma from "../../db/prisma.js";
+import { generateShortCode } from "../../utils/base62.js";
+import { createUrl } from "../../validators/url.js";
+import { requestValidator } from "../../middleware/requestValidator.js";
 
 const router = express.Router();
 
 router.post(
-  '/',
+  "/",
   requestValidator({ body: createUrl }),
   async (req, res, next) => {
     try {
@@ -19,9 +19,10 @@ router.post(
 
       while (exists) {
         shortCode = generateShortCode();
-        exists = await prisma.url.findUnique({
+        const url = await prisma.url.findUnique({
           where: { shortCode },
         });
+        if (!url) exists = false;
       }
 
       const url = await prisma.url.create({
@@ -35,7 +36,7 @@ router.post(
 
       res.status(201).json({
         success: true,
-        message: 'Short URL created successfully',
+        message: "Short URL created successfully",
         data: {
           id: url.id,
           originalUrl: url.originalUrl,
@@ -47,7 +48,7 @@ router.post(
     } catch (error) {
       next(error);
     }
-  }
+  },
 );
 
 export default router;
