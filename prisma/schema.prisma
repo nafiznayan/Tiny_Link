@@ -25,6 +25,8 @@ model Url {
   updatedAt   DateTime  @updatedAt
 
   clicks Click[]
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
 
   @@index([shortCode])
 }
@@ -41,4 +43,14 @@ model Click {
 
   @@index([urlId])
   @@index([timestamp])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  urls Url[]
 }
